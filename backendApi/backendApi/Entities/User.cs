@@ -10,6 +10,8 @@ namespace backendApi.Entities
         
         public string Surname { get; init; }
         
+        public string Password { get; init; }
+        
         public decimal Balance { get; init; }
         
         public DateTimeOffset CreatedDate { get; init; }
