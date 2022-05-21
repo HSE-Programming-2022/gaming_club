@@ -12,6 +12,7 @@ namespace backendApi
                 Id = user.Id,
                 Name = user.Name,
                 Surname = user.Surname,
+                Password = user.Password,
                 Balance = user.Balance,
                 CreatedDate =  user.CreatedDate
             };

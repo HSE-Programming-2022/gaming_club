@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using backendApi.Dtos;
 using backendApi.Entities;
 using backendApi.Repositories;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backendApi.Controllers
@@ -34,18 +37,29 @@ namespace backendApi.Controllers
             {
                 return NotFound();
             }
-
+            
             return user.AsDto();
         }
 
         [HttpPost]
         public ActionResult<UserDto> CreateUser(CreateUserDto userDto)
         {
+            StringBuilder hashedPass = new StringBuilder();
+
+            using (SHA256 hash = SHA256Managed.Create()) {
+                Encoding enc = Encoding.UTF8;
+                Byte[] result = hash.ComputeHash(enc.GetBytes(userDto.Password));
+
+                foreach (Byte b in result)
+                    hashedPass.Append(b.ToString("x2"));
+            }
+
             User user = new()
             {
                 Id = Guid.NewGuid(),
                 Name = userDto.Name,
                 Surname = userDto.Surname,
+                Password = hashedPass.ToString(),
                 Balance = userDto.Balance,
                 CreatedDate = DateTimeOffset.Now
             };
