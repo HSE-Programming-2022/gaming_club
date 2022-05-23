@@ -1,10 +1,12 @@
 <template>
   <v-app>
+    <NavigationBar>
+    </NavigationBar>
     <v-sheet
         id="scrolling-techniques-6"
         class="overflow-y-auto"
     >
-        <v-content style="height: 100vh;">
+        <v-content style="height: 100vh; margin-top: 5px;">
           <router-view>
           </router-view>
         </v-content>
@@ -24,6 +26,14 @@
 </style>
 <script>
 
+import NavigationBar from "@/components/NavigationBar";
+
 export default {
+  components: {
+    NavigationBar
+  },
+  data: () => ({
+    collapseOnScroll: true,
+  })
 }
 </script>
