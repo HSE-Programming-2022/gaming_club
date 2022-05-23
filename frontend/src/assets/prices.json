@@ -1,0 +1,138 @@
+{
+    "time_price": {
+        "morning": [{
+          "main": {
+            "price": "55р",
+            "time": "1ч"
+          },
+          "premium": {
+            "price": "85р",
+            "time": "1ч"
+          }}, 
+          {
+          "main": {
+            "price": "150р",
+            "time": "3+1ч"
+          },
+          "premium": {
+            "price": "240р",
+            "time": "3+1ч"
+          }},
+          {
+          "main": {
+            "price": "265р",
+            "time": "5+2ч"
+          }, 
+          "premium": {
+            "price": "420р",
+            "time": "5+2ч"
+          }},
+          {
+          "main": {
+            "price": "465р",
+            "time": "12ч"
+          },
+          "premium": {
+            "price": "720р",
+            "time": "12ч"
+          }},
+          {
+            "main": {
+              "price": "900р",
+              "time": "24ч"
+            },
+            "premium": {
+              "price": "1425р",
+              "time": "24ч"
+            }}
+        
+        ],
+        "middle": [{
+          "main": {
+            "price": "70р",
+            "time": "1ч"
+          },
+          "premium": {
+            "price": "110р",
+            "time": "1ч"
+          }}, 
+          {
+          "main": {
+            "price": "200р",
+            "time": "3+1ч"
+          },
+          "premium": {
+            "price": "",
+            "time": ""
+          }},
+          {
+            "main": {
+              "price": "350р",
+              "time": "5+2ч"
+          },
+          "premium": {
+            "price": "",
+            "time": ""
+          }},
+          {
+            "main": {
+              "price": "600р",
+              "time": "12ч"
+          },
+          "premium": {
+            "price": "",
+            "time": ""
+          }},
+          {
+            "main": {
+              "price": "1200р",
+              "time": "24ч"
+          },
+          "premium": {
+            "price": "",
+            "time": ""
+          }}
+        ],
+        "night": [{
+          "main": {
+            "price": "350р",
+            "time": "10ч (с момента приобретения)"
+          },
+          "premium": {
+            "price": "",
+            "time": ""
+          }}         
+        ],
+        "rent": [{
+          "main": {
+            "price": "24ч 250р",
+            "time": "ПК стандарт"
+          },
+          "premium": {
+            "price": "",
+            "time": ""
+          }},
+          {
+          "main": {
+            "price": "24ч 350р",
+            "time": "ПК VIP"
+          },
+          "premium": {
+            "price": "",
+            "time": ""
+          }},
+          {
+          "main": {
+            "price": "24ч 300р",
+            "time": "PS4"
+          },
+          "premium": {
+            "price": "",
+            "time": ""
+          }}
+
+
+
+        ]
+    }
+}
