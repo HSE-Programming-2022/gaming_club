@@ -1,6 +1,9 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+    <v-parallax
+        height="500"
+        src="@/assets/background.jpeg">
+    </v-parallax>
     <HelloWorld msg="Welcome to Your Vue.js App"/>
   </div>
 </template>
@@ -13,6 +16,6 @@ export default {
   name: 'HomeView',
   components: {
     HelloWorld
-  }
+  },
 }
 </script>
