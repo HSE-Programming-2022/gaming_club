@@ -20,6 +20,12 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
 }
+
+@font-face {
+    font-family: "our_font";
+    src: local("our_font"),
+     url("@/assets/9331.ttf") format("truetype");
+  }
 </style>
 <script>
 
