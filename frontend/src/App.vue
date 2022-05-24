@@ -5,8 +5,28 @@
       <router-link to="/contacts">Contacts</router-link>
     </nav>
     <router-view/>
+
+
+    <HereMap
+      appId="APP-ID-HERE"
+      appCode="APP-CODE-HERE"
+      lat="37.7397"
+      lng="-121.4252"
+      width="100%"
+      height="835px" />
   </div>
 </template>
+
+<script>
+import HereMap from "./components/ClubMap.vue"
+
+export default {
+  name: 'app',
+  components: {
+    HereMap
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
