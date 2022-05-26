@@ -41,6 +41,8 @@ namespace backendApi
                 return new MongoClient(settings.ConnectionString);
             });
 
+            services.AddSingleton<IPlacesRepository, MongoDbPlacesRepository>();
+
             services.AddSingleton<IUsersRepository, MongoDbRepository>();
             
             services.AddControllers();
