@@ -43,6 +43,7 @@ namespace backendApi
                 return new MongoClient(settings.ConnectionString);
             });
 
+            services.AddSingleton<IPlacesRepository, MongoDbPlacesRepository>();
             services.AddSingleton<IUsersRepository, MongoDbUsersRepository>();
             services.AddCors(options =>
             {
@@ -53,7 +54,6 @@ namespace backendApi
                         policy.WithHeaders("*");
                     });
             });
-
             
             services.AddControllers();
             services.AddSwaggerGen(c =>
