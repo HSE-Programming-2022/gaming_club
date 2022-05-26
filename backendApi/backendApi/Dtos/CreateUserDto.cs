@@ -14,6 +14,11 @@ namespace  backendApi.Dtos
         public string Password { get; init; }
         
         [Required]
+        public string Email { get; init; }
+        
+        [Required]
+        public string PhoneNumber { get; init; }
+        
         [Range(0, 1000000)]
         public decimal Balance { get; init; }
     }

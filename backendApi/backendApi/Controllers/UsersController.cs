@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using backendApi.Dtos;
 using backendApi.Entities;
 using backendApi.Repositories;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Matching;
 
 namespace backendApi.Controllers
 {
@@ -20,6 +22,20 @@ namespace backendApi.Controllers
         public UsersController(IUsersRepository repository)
         {
             this.repository = repository;
+        }
+
+        private string GetHashFromString(string str)
+        {
+            StringBuilder hashedPass = new StringBuilder();
+            using (SHA256 hash = SHA256Managed.Create()) {
+                Encoding enc = Encoding.UTF8;
+                Byte[] result = hash.ComputeHash(enc.GetBytes(str));
+
+                foreach (Byte b in result)
+                    hashedPass.Append(b.ToString("x2"));
+            }
+
+            return hashedPass.ToString();
         }
         
         [HttpGet]
@@ -40,18 +56,33 @@ namespace backendApi.Controllers
             
             return user.AsDto();
         }
+        
+        [HttpPost("verify")]
+        public ActionResult<UserDto> GetUser(VerifyUserDto userDto)
+        {
+            Thread.Sleep(3000);
+            var user = repository.GetUserByEmail(userDto.Email);
+            if (user is null)
+            {
+                return NotFound();
+            }
+
+
+            if (userDto.Password == user.Password)
+            {
+                return Ok();
+            }
+
+            return NotFound();
+        }
 
         [HttpPost]
         public ActionResult<UserDto> CreateUser(CreateUserDto userDto)
         {
-            StringBuilder hashedPass = new StringBuilder();
-
-            using (SHA256 hash = SHA256Managed.Create()) {
-                Encoding enc = Encoding.UTF8;
-                Byte[] result = hash.ComputeHash(enc.GetBytes(userDto.Password));
-
-                foreach (Byte b in result)
-                    hashedPass.Append(b.ToString("x2"));
+            if (repository.GetUserByEmail(userDto.Email) is not null ||
+                repository.GetUserByEmail(userDto.PhoneNumber) is not null)
+            {
+                return Conflict();
             }
 
             User user = new()
@@ -59,7 +90,9 @@ namespace backendApi.Controllers
                 Id = Guid.NewGuid(),
                 Name = userDto.Name,
                 Surname = userDto.Surname,
-                Password = hashedPass.ToString(),
+                Password = GetHashFromString(userDto.Password),
+                Email = userDto.Email,
+                PhoneNumber = userDto.PhoneNumber,
                 Balance = userDto.Balance,
                 CreatedDate = DateTimeOffset.Now
             };
@@ -79,8 +112,7 @@ namespace backendApi.Controllers
 
             User updatedUser = user with
             {
-                Name = userDto.Name,
-                Surname = userDto.Surname,
+                Email = userDto.Email,
                 Balance = userDto.Balance
             };
             repository.UpdateUser(updatedUser);

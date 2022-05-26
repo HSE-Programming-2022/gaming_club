@@ -13,6 +13,8 @@ namespace backendApi
                 Name = user.Name,
                 Surname = user.Surname,
                 Password = user.Password,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
                 Balance = user.Balance,
                 CreatedDate =  user.CreatedDate
             };

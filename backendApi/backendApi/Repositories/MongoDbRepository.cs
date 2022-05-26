@@ -6,14 +6,14 @@ using MongoDB.Bson;
 
 namespace backendApi.Repositories
 {
-    public class MongoDbRepository : IUsersRepository
+    public class MongoDbUsersRepository : IUsersRepository
     {
         private const string databaseName = "backend";
         private const string collectionName = "users";
         private readonly IMongoCollection<User> usersCollection;
         private readonly FilterDefinitionBuilder<User> filterBuilder = Builders<User>.Filter;
 
-        public MongoDbRepository(IMongoClient mongoClient)
+        public MongoDbUsersRepository(IMongoClient mongoClient)
         {
             IMongoDatabase database = mongoClient.GetDatabase(databaseName);
             usersCollection = database.GetCollection<User>(collectionName);
@@ -30,6 +30,18 @@ namespace backendApi.Repositories
             return usersCollection.Find(filter).SingleOrDefault();
         }
 
+        public User GetUserByEmail(string email)
+        {
+            var filter = filterBuilder.Eq(user => user.Email, email);
+            return usersCollection.Find(filter).SingleOrDefault();
+        }
+        
+        public User GetUserByPhone(string phone)
+        {
+            var filter = filterBuilder.Eq(user => user.PhoneNumber, phone);
+            return usersCollection.Find(filter).SingleOrDefault();
+        }
+        
         public void CreateUser(User user)
         {
             usersCollection.InsertOne(user);
