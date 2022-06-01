@@ -2,9 +2,8 @@
   <div id="app">
     <nav>
       <router-link to="/">Home</router-link> |
-      <router-link to="/contacts">Contacts</router-link>
+      <router-link to="/contacts">Контакты</router-link>
     </nav>
-    <router-view/>
     <v-sheet
       id="scrolling-techniques-6"
       class="overflow-y-auto"

@@ -2,9 +2,9 @@
   <div id="контакты">
     <h1> Контакты </h1>
     <hr>
-    <img alt="Club map" src="../assets/ClubMap.png/">
-      <ClubMap />
     <ClubContactsTable />
+    <CarouselPhoto />
+    <DescriptionAddress />
     <!--
     <h1 class="title">{{ title }}</h1>
     <div class="прямоугольник">
@@ -17,28 +17,30 @@
     </div>
     -->
 
-  </div>
+    </div>
 </template>
 
 
 
 <script>
-import ClubMap from "@/components/ClubMap";
 import ClubContactsTable from "@/components/ClubContactsTable";
+import CarouselPhoto from "@/components/CarouselPhoto";
+import DescriptionAddress from "@/components/DescriptionAddress";
 export default {
   components: {
+    DescriptionAddress,
+    CarouselPhoto,
     ClubContactsTable,
-    ClubMap
   },
-  data() {
-    return {
-      title: "Контакты",
-      Adress_: "г. Самара"
 
-    };
-  },
 };
 </script>
+
+
+
 <style scoped>
+img {
+  width: auto
+}
 </style>
 
