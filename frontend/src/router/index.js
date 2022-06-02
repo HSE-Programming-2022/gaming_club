@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ContactsView from "@/views/ContactsView"
 import PriceView from "@/views/PriceView"
+import NewsView from "@/views/NewsView"
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/prices',
     name: 'Prices',
     component: PriceView
+  },
+  {
+    path: '/news',
+    name: 'News',
+    component: NewsView
   }
 ]
 
