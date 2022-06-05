@@ -4,14 +4,16 @@
       <v-col cols="12">
       </v-col>
 
-      <v-col class="mb-4">
-        <h1 class="display-2 font-weight-bold mb-3">
+      <v-col class="computer_font mb-4">
+        <h1 class="computer_font display-2 font-weight-bold mb-3">
           Компьютерный клуб <a class="gradient_text">REBORN</a>
         </h1>
-
         <p class="subheading font-weight-regular">
           Приветствуем вас на странице самого крупного и современного компьютерного развлекательного центра Самары!
         </p>
+        <v-icon x-large>
+          mdi-arrow-down-bold
+        </v-icon>
         <v-card
             class="mx-auto btn-gradient-2"
             max-width="500"
@@ -24,7 +26,7 @@
             style="margin-top: 5em;"
         >
           <v-card-text>
-            <p class="text-h4 text--primary">
+            <p class="computer_font text-h4 text--primary">
               Сразись с лучшими!
             </p>
             <div class="text--primary">
@@ -74,6 +76,9 @@ export default {
 </script>
 
 <style scoped>
+  .computer_font {
+    font-family: "our_font" !important;
+  }
   .btn-gradient-2 {
     background:
         linear-gradient(rgb(20, 20, 20), rgb(28, 28, 28)) padding-box,

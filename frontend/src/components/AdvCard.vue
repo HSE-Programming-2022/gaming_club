@@ -12,7 +12,7 @@
       style="margin-top: 5em;"
   >
     <v-card-text>
-      <p class="text-h4 text--primary">
+      <p class="computer_font text-h4 text--primary">
         {{ title }}
       </p>
       <div class="text--primary">
@@ -37,12 +37,15 @@ export default {
 </script>
 
 <style scoped>
-.btn-gradient-2 {
-  background:
-      linear-gradient(rgb(20, 20, 20), rgb(28, 28, 28)) padding-box,
-      linear-gradient(to right, rgb(134, 44, 130), rgb(201, 120, 60)) border-box;
+  .computer_font {
+    font-family: "our_font" !important;
+  }
+  .btn-gradient-2 {
+    background:
+        linear-gradient(rgb(20, 20, 20), rgb(28, 28, 28)) padding-box,
+        linear-gradient(to right, rgb(134, 44, 130), rgb(201, 120, 60)) border-box;
 
-  border-radius: 30px;
-  border: 2px solid transparent;
-}
+    border-radius: 30px;
+    border: 2px solid transparent;
+  }
 </style>
