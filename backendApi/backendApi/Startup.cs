@@ -67,13 +67,12 @@ namespace backendApi
         {
             if (env.IsDevelopment())
             {
+                app.UseHttpsRedirection();
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseCors(MyAllowSpecificOrigins);
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "backendApi v1"));
-            }
-
-            app.UseHttpsRedirection();
+            }    
 
             app.UseRouting();
 
