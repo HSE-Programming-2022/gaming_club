@@ -45,16 +45,6 @@ namespace backendApi
 
             services.AddSingleton<IPlacesRepository, MongoDbPlacesRepository>();
             services.AddSingleton<IUsersRepository, MongoDbUsersRepository>();
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                    policy =>
-                    {
-                        policy.WithOrigins("http://localhost:8080", "http://127.0.0.1:8080");
-                        policy.WithHeaders("*");
-                    });
-            });
-            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -70,9 +60,14 @@ namespace backendApi
                 app.UseHttpsRedirection();
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseCors(MyAllowSpecificOrigins);
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "backendApi v1"));
             }    
+            
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
 
             app.UseRouting();
 
