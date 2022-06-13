@@ -3,12 +3,10 @@ import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ContactsView from "@/views/ContactsView"
 import PriceView from "@/views/PriceView"
-<<<<<<< Updated upstream
 import NewsView from "@/views/NewsView"
-=======
 import SignUpView from "@/views/SignUpView";
 import LoginView from "@/views/LoginView";
->>>>>>> Stashed changes
+
 
 Vue.use(VueRouter)
 
