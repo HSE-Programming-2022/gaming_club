@@ -22,7 +22,7 @@
 
     <v-navigation-drawer
         v-model="drawer"
-        absolute
+        fixed
         temporary
     >
       <v-list
@@ -44,13 +44,49 @@
 
           <v-list-item to="/contacts">
             <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
+              <v-icon>mdi-card-account-phone-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>
               Контакты
             </v-list-item-title>
           </v-list-item>
+
+          <v-list-item to="/prices">
+            <v-list-item-icon>
+              <v-icon>mdi-cash-multiple</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>
+              Цены
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item to="/signup" v-if="!this.userLoggedIn">
+            <v-list-item-icon>
+              <v-icon>mdi-login</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>
+              Регистрация
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item to="/login" v-if="!this.userLoggedIn">
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>
+              Логин
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="logout" v-if="this.userLoggedIn">
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>
+              Выйти
+            </v-list-item-title>
+          </v-list-item>
         </v-list-item-group>
+
       </v-list>
     </v-navigation-drawer>
   </nav>
@@ -62,6 +98,20 @@ export default {
     group: null,
     collapseOnScroll: true,
     hide: false,
+    userLoggedIn: false
   }),
+  mounted() {
+    this.userLoggedIn = this.userLoggedInProp
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem('user-info')
+      this.userLoggedIn = false
+      location.reload()
+    }
+  },
+  props: {
+    userLoggedInProp: Boolean
+  }
 }
 </script>

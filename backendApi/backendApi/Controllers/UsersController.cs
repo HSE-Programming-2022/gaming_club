@@ -56,6 +56,21 @@ namespace backendApi.Controllers
             
             return user.AsDto();
         }
+
+        [HttpPost("login")]
+        public ActionResult<UserDto> LoginUser(VerifyUserDto userDto)
+        {
+            var user = repository.GetUserByEmail(userDto.Email);
+            if (user is null)
+            {
+                return BadRequest();
+            }
+            if (GetHashFromString(userDto.Password) == user.Password)
+            {
+                return CreatedAtAction(nameof(GetUser), new {id = user.Id}, user.AsDto());
+            }
+            return BadRequest();
+        }
         
         [HttpPost("verify")]
         public ActionResult<UserDto> GetUser(VerifyUserDto userDto)
