@@ -24,7 +24,6 @@
 
 <style lang="scss">
 @import url(//fonts.googleapis.com/css?family=Vibur);
-@import './assets/pacman.scss';
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
