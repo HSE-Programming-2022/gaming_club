@@ -158,6 +158,7 @@ export default {
   },
   methods: {
     async preload_data(){
+      let userLogged = false
       if (!this.loadedUserInfo) {
         let user = localStorage.getItem('user-info')
         let user_found = true
@@ -171,7 +172,7 @@ export default {
               .then(function (response) {
 
                 if (response.status === 200) {
-                  this.userLoggedIn = true
+                  userLogged = true
                 }
               })
               .catch(function (error) {
@@ -185,6 +186,7 @@ export default {
           }
         }
       }
+      this.userLoggedIn = userLogged
       this.loadedUserInfo = true
     }
   },
