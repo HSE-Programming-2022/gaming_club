@@ -7,6 +7,8 @@ import 'aos/dist/aos.css'
 
 Vue.config.productionTip = false
 
+
+
 new Vue({
   vuetify,
   router,
