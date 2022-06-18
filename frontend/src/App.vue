@@ -206,4 +206,4 @@ export default {
     this.preload_data();
   },
 }
-</style>
+</script>
