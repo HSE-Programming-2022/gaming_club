@@ -1,14 +1,14 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace backendApi.Dtos
 {
-    public class UpdateUserDto
+    public class VerifyUserDto
     {
         [Required]
         public string Email { get; init; }
         
         [Required]
-        [Range(0, 1000000)]
-        public decimal Balance { get; init; }
+        public string Password { get; init; }
     }
 }

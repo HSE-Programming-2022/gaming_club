@@ -8,6 +8,10 @@ namespace backendApi.Repositories
     {
         IEnumerable<User> GetUsers();
         User GetUser(Guid id);
+        
+        User GetUserByEmail(string email);
+        
+        User GetUserByPhone(string email);
 
         void CreateUser(User user);
 

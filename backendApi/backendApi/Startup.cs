@@ -28,7 +28,9 @@ namespace backendApi
         }
 
         public IConfiguration Configuration { get; }
-
+        
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -41,8 +43,8 @@ namespace backendApi
                 return new MongoClient(settings.ConnectionString);
             });
 
-            services.AddSingleton<IUsersRepository, MongoDbRepository>();
-            
+            services.AddSingleton<IPlacesRepository, MongoDbPlacesRepository>();
+            services.AddSingleton<IUsersRepository, MongoDbUsersRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -55,12 +57,17 @@ namespace backendApi
         {
             if (env.IsDevelopment())
             {
+                app.UseHttpsRedirection();
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "backendApi v1"));
-            }
-
-            app.UseHttpsRedirection();
+            }    
+            
+            app.UseCors(x => x
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(origin => true) // allow any origin
+                .AllowCredentials()); // allow credentials
 
             app.UseRouting();
 

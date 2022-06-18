@@ -1,0 +1,16 @@
+<template>
+  <LoginComponent style="margin-left: 20em; margin-right: 20em;">
+  </LoginComponent>
+</template>
+
+<script>
+import LoginComponent from "@/components/LoginComponent";
+export default {
+  name: "LoginView",
+  components: {LoginComponent}
+}
+</script>
+
+<style scoped>
+
+</style>

@@ -1,7 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import ContactsView from "@/views/ContactsView";
+import ContactsView from "@/views/ContactsView"
+import PriceView from "@/views/PriceView"
+import NewsView from "@/views/NewsView"
+import SignUpView from "@/views/SignUpView";
+import LoginView from "@/views/LoginView";
+
 
 Vue.use(VueRouter)
 
@@ -14,11 +19,29 @@ const routes = [
   {
     path: '/contacts',
     name: 'Contacts',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: ContactsView
-  }
+  },
+  {
+    path: '/prices',
+    name: 'Prices',
+    component: PriceView
+  },
+  {
+
+    path: '/news',
+    name: 'News',
+    component: NewsView
+  },
+  {
+    path: '/signup',
+    name: 'Sign Up',
+    component: SignUpView
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginView
+  },
 ]
 
 const router = new VueRouter({
