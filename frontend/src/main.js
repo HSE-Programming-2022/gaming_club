@@ -7,7 +7,10 @@ import 'aos/dist/aos.css'
 
 Vue.config.productionTip = false
 
-
+Vue.prototype.$backend_url = 'http://127.0.0.1:8080'
+if (process.env.BACKEND_URL) {
+  Vue.prototype.$backend_url = process.env.BACKEND_URL
+}
 
 new Vue({
   vuetify,

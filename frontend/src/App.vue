@@ -177,7 +177,7 @@ export default {
         if (user)
         {
           let userJson = JSON.parse(user)
-          await axios.post("http://127.0.0.1:8080/users/verify", {
+          await axios.post( this.$backend_url + "/users/verify", {
             email: userJson.email,
             password: userJson.password,
           })
