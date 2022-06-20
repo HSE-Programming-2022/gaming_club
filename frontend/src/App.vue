@@ -14,8 +14,6 @@
         </v-sheet>
       </div>
       <div v-else class="loading">
-        <!--      <h1>Готовимся к вашему приходу...</h1>-->
-        <!--      <div class='pac-man' />-->
         <div class="logo"><b>R<span>E</span>B<span>O</span><span>R</span>N</b></div>
       </div>
     </v-app>
@@ -29,6 +27,20 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  color: #2c3e50;
+}
+
+nav {
+  padding: 30px;
+
+  a {
+    font-weight: bold;
+    color: #2c3e50;
+
+    &.router-link-exact-active {
+      color: #42b983;
+    }
+  }
 }
 
 @font-face {
@@ -165,7 +177,7 @@ export default {
         if (user)
         {
           let userJson = JSON.parse(user)
-          await axios.post("http://127.0.0.1:8080/users/verify", {
+          await axios.post( this.$backend_url + "/users/verify", {
             email: userJson.email,
             password: userJson.password,
           })

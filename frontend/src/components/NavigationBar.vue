@@ -78,7 +78,7 @@
             </v-list-item-title>
           </v-list-item>
 
-          <v-list-item to="/login" v-if="!this.userLoggedIn">
+          <v-list-item to="/login" v-if="!this.userLoggedInProp">
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
             </v-list-item-icon>
@@ -116,15 +116,10 @@ export default {
     group: null,
     collapseOnScroll: true,
     hide: false,
-    userLoggedIn: false
   }),
-  mounted() {
-    this.userLoggedIn = this.userLoggedInProp
-  },
   methods: {
     logout() {
       localStorage.removeItem('user-info')
-      this.userLoggedIn = false
       location.reload()
     }
   },
