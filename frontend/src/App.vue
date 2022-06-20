@@ -203,7 +203,7 @@ export default {
     }
   },
   mounted() {
-    this.preload_data();
+    this.preload_data()
   },
 }
 </script>

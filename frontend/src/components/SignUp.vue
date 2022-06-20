@@ -132,7 +132,7 @@ export default {
     async submit () {
       this.$refs.observer.validate()
       let user_exists = false
-      await axios.post("http://127.0.0.1:8080/users/", {
+      await axios.post(this.$backend_url + "/users/", {
         email: this.email,
         phoneNumber : this.phoneNumber,
         name: this.name,
