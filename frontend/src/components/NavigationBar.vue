@@ -60,7 +60,16 @@
             </v-list-item-title>
           </v-list-item>
 
-          <v-list-item to="/signup" v-if="!this.userLoggedInProp">
+          <v-list-item to="/news">
+            <v-list-item-icon>
+              <v-icon>mdi-newspaper</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>
+              Новости
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item to="/signup" v-if="!this.userLoggedIn">
             <v-list-item-icon>
               <v-icon>mdi-login</v-icon>
             </v-list-item-icon>
@@ -77,14 +86,23 @@
               Логин
             </v-list-item-title>
           </v-list-item>
-          <v-list-item @click="logout" v-if="this.userLoggedInProp">
+          <v-list-item to="/profile" v-if="this.userLoggedIn">
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>
+              Профиль
+            </v-list-item-title>
+            </v-list-item>
+          <v-list-item @click="logout" v-if="this.userLoggedIn">
+            <v-list-item-icon>
+              <v-icon>mdi-arrow-left</v-icon>
             </v-list-item-icon>
             <v-list-item-title>
               Выйти
             </v-list-item-title>
           </v-list-item>
+           
         </v-list-item-group>
 
       </v-list>

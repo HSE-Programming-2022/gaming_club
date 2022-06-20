@@ -6,6 +6,7 @@ import PriceView from "@/views/PriceView"
 import NewsView from "@/views/NewsView"
 import SignUpView from "@/views/SignUpView";
 import LoginView from "@/views/LoginView";
+import ProfileView from "@/views/ProfileView";
 
 
 Vue.use(VueRouter)
@@ -41,6 +42,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: LoginView
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: ProfileView
   },
 ]
 

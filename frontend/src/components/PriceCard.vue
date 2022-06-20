@@ -2,13 +2,14 @@
     <div>
         <v-card
             class="mx-auto"
-            max-width="344"
+            max-width="400"
+            max-height="600"
             color="#150726"
         >
            
             <v-img
             :src="require('@/assets/' + img + '')"
-            height="200px"
+            height="300px"
             ></v-img>
 
             <v-card-title class="description">
@@ -28,6 +29,8 @@
             >
                 ПОСМОТРЕТЬ ЦЕНЫ
             </v-btn>
+
+            
 
             <v-spacer></v-spacer>
 
