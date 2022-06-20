@@ -12,8 +12,6 @@ if (process.env.NODE_ENV === 'production') {
   Vue.prototype.$backend_url = 'http://mdpashedko.ru:8080'
 }
 
-console.log(Vue.prototype.$backend_url)
-
 new Vue({
   vuetify,
   router,
