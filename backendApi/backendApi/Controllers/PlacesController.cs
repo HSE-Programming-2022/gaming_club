@@ -46,7 +46,7 @@ namespace backendApi.Controllers
         
         public ActionResult<PlaceDto> CreatePlace(CreatePlaceDto placeDto)
         {
-            if (repository.GetPlaceByHallRowSeat(placeDto.HallNumber, placeDto.RowNumber, placeDto.SeatNumber) is not null)
+            if (repository.GetPlaceByHallRowSeat(placeDto.Number, placeDto.RowNumber, placeDto.SeatNumber) is not null)
             {
                 return Conflict();
             }
@@ -56,7 +56,7 @@ namespace backendApi.Controllers
                 Price = placeDto.Price,
                 RowNumber = placeDto.RowNumber,
                 SeatNumber = placeDto.SeatNumber,
-                HallNumber = placeDto.HallNumber,
+                Number = placeDto.Number,
                 Description = placeDto.Description,
                 Type = placeDto.Type
             };

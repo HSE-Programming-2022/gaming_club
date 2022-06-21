@@ -39,9 +39,9 @@ namespace backendApi.Repositories
             return placesCollection.Find(filter).SingleOrDefault();
         }
 
-        public Place GetPlaceByHallRowSeat(int hallnumber, int rownumber, int seatnumber)
+        public Place GetPlaceByHallRowSeat(int number, int rownumber, int seatnumber)
         {
-            var filterHall = filterBuilder.Eq(place => place.HallNumber, hallnumber);
+            var filterHall = filterBuilder.Eq(place => place.Number, number);
             var filterRaw = filterBuilder.Eq(place => place.RowNumber, rownumber);
             var filterSeat = filterBuilder.Eq(place => place.SeatNumber, seatnumber);
             var filter = Builders<Place>.Filter.And(new List<FilterDefinition<Place>>{ filterHall, filterRaw, filterSeat});

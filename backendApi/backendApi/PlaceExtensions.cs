@@ -13,7 +13,7 @@ namespace backendApi
                 Price = place.Price,
                 RowNumber = place.RowNumber,
                 SeatNumber = place.SeatNumber,
-                HallNumber = place.HallNumber,
+                Number = place.Number,
                 Description = place.Description,
                 Type = place.Type
             };

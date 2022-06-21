@@ -14,7 +14,7 @@ namespace backendApi.Entities
 
         public string Description { get; set; }
 
-        public int HallNumber { get; init; }
+        public int Number { get; init; }
 
         public string Type { get; set; }
 
