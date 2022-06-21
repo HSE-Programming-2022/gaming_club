@@ -43,8 +43,13 @@ namespace backendApi.Controllers
 
         // POST /places
         [HttpPost]
+        
         public ActionResult<PlaceDto> CreatePlace(CreatePlaceDto placeDto)
         {
+            if (repository.GetPlaceByHallRowSeat(placeDto.HallNumber, placeDto.RowNumber, placeDto.SeatNumber) is not null)
+            {
+                return Conflict();
+            }
             Place place = new()
             {
                 Id = Guid.NewGuid(),

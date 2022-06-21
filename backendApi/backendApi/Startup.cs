@@ -45,6 +45,7 @@ namespace backendApi
 
             services.AddSingleton<IPlacesRepository, MongoDbPlacesRepository>();
             services.AddSingleton<IUsersRepository, MongoDbUsersRepository>();
+            services.AddSingleton<ITariffesRepository, MongoDbTariffesRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

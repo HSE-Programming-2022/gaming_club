@@ -95,7 +95,7 @@ namespace backendApi.Controllers
         public ActionResult<UserDto> CreateUser(CreateUserDto userDto)
         {
             if (repository.GetUserByEmail(userDto.Email) is not null ||
-                repository.GetUserByEmail(userDto.PhoneNumber) is not null)
+                repository.GetUserByPhone(userDto.PhoneNumber) is not null)
             {
                 return Conflict();
             }
