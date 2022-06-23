@@ -7,9 +7,7 @@ namespace backendApi.Dtos
         public Guid Id { get; init; }
         
         public string UserCredentials { get; init; }
-        
-        public string TariffName { get; init; }
-        
+
         public int PlaceRow { get; init; }
         
         public int PlaceNumber { get; init; }

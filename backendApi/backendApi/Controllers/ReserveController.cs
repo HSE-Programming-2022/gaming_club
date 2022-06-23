@@ -71,7 +71,6 @@ namespace backendApi.Controllers
             Reserve reserve = new()
             {
                 User = repositoryUsers.GetUser(reserveDto.UserId),
-                Tariff = repositoryTariffes.GetTariff(reserveDto.TariffId),
                 Place = repositoryPlaces.GetPlace(reserveDto.PlaceId),
                 StartTime = startTime,
                 FinishTime = finishTime
@@ -79,5 +78,13 @@ namespace backendApi.Controllers
             repository.CreateReserve(reserve);
             return CreatedAtAction(nameof(GetReserve), new {id = reserve.Id}, reserve.AsDto());
         }
+
+        [HttpGet("by_user/{id}")]
+        public IEnumerable<ReserveDto> GetReservesByUser(Guid id)
+        {
+            return repository.GetReserves().Where(reserve => reserve.User.Id == id)
+                .Select(item => item.AsDto());
+        }
+
     }
 }

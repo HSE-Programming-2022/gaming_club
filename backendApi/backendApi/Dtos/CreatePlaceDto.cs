@@ -17,7 +17,7 @@ namespace backendApi.Dtos
         public int SeatNumber { get; init; }
 
         [Required]
-        [Range(1, 5)]
+        [Range(1, 100)]
         public int Number { get; init; }
 
         [Required]

@@ -11,7 +11,6 @@ namespace backendApi
             {
                 Id = reserve.Id,
                 UserCredentials = reserve.User.Name + " " + reserve.User.Surname,
-                TariffName = reserve.Tariff.Name,
                 PlaceRow = reserve.Place.RowNumber,
                 PlaceNumber = reserve.Place.SeatNumber,
                 StartTime = reserve.StartTime,
