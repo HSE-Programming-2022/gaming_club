@@ -6,6 +6,7 @@ import PriceView from "@/views/PriceView"
 import NewsView from "@/views/NewsView"
 import SignUpView from "@/views/SignUpView";
 import LoginView from "@/views/LoginView";
+import BookingView from "@/views/BookingView"
 
 
 Vue.use(VueRouter)
@@ -42,6 +43,11 @@ const routes = [
     name: 'Login',
     component: LoginView
   },
+  {
+    path: '/booking',
+    name: 'Booking',
+    component: BookingView
+  }
 ]
 
 const router = new VueRouter({
