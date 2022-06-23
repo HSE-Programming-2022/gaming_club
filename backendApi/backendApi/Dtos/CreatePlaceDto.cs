@@ -18,7 +18,7 @@ namespace backendApi.Dtos
 
         [Required]
         [Range(1, 5)]
-        public int HallNumber { get; init; }
+        public int Number { get; init; }
 
         [Required]
         public string Type { get; set; }

@@ -11,7 +11,7 @@ namespace backendApi.Repositories
         
         User GetUserByEmail(string email);
         
-        User GetUserByPhone(string email);
+        User GetUserByPhone(string phone);
 
         void CreateUser(User user);
 

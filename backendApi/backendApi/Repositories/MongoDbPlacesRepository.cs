@@ -39,6 +39,17 @@ namespace backendApi.Repositories
             return placesCollection.Find(filter).SingleOrDefault();
         }
 
+        public Place GetPlaceByHallRowSeat(int number, int rownumber, int seatnumber)
+        {
+            var filterHall = filterBuilder.Eq(place => place.Number, number);
+            var filterRaw = filterBuilder.Eq(place => place.RowNumber, rownumber);
+            var filterSeat = filterBuilder.Eq(place => place.SeatNumber, seatnumber);
+            var filter = Builders<Place>.Filter.And(new List<FilterDefinition<Place>>{ filterHall, filterRaw, filterSeat});
+
+            return placesCollection.Find(filter).SingleOrDefault();
+        }
+
+
         public IEnumerable<Place> GetPlaces()
         {
             return placesCollection.Find(new BsonDocument()).ToList();

@@ -45,6 +45,8 @@ namespace backendApi
 
             services.AddSingleton<IPlacesRepository, MongoDbPlacesRepository>();
             services.AddSingleton<IUsersRepository, MongoDbUsersRepository>();
+            services.AddSingleton<ITariffesRepository, MongoDbTariffesRepository>();
+            services.AddSingleton<IReserveRepository, MongoDbReservesRepository>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -59,8 +61,6 @@ namespace backendApi
             {
                 app.UseHttpsRedirection();
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "backendApi v1"));
             }    
             
             app.UseCors(x => x
@@ -72,6 +72,9 @@ namespace backendApi
             app.UseRouting();
 
             app.UseAuthorization();
+            
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "backendApi v1"));
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
