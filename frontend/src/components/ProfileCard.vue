@@ -8,7 +8,9 @@
             <v-list-item three-line>
             <v-list-item-content>
                 <v-list-item-subtitle class="description">
+                    <div>
                     Имя
+                    </div>
                 </v-list-item-subtitle>
                 <div>
                 {{ Name }}
@@ -48,7 +50,7 @@
             <v-card-actions>
             <v-btn 
                 class="description" 
-                color="purple"
+                color="green"
                 outlined
                 rounded
                 text
