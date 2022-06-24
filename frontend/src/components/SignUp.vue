@@ -14,11 +14,12 @@
     <validation-observer
         ref="observer"
         v-slot="{ invalid }"
+        bails="false"
     >
       <form @submit.prevent="submit">
         <validation-provider
             v-slot="{ errors }"
-            name="Name"
+            name="Имя"
             rules="required|max:15"
         >
           <v-text-field
@@ -31,7 +32,7 @@
         </validation-provider>
         <validation-provider
             v-slot="{ errors }"
-            name="surname"
+            name="Фамилия"
             rules="required|max:15"
         >
           <v-text-field
@@ -44,7 +45,7 @@
         </validation-provider>
         <validation-provider
             v-slot="{ errors }"
-            name="phoneNumber"
+            name="телефонный номер"
             :rules="{
           required: true,
           digits: 11,
@@ -74,8 +75,8 @@
 
         <validation-provider
             v-slot="{ errors }"
-            name="password"
-            rules="required|password"
+            name="Пароль"
+            rules="password"
         >
         <v-text-field
             v-model="password"
@@ -84,9 +85,10 @@
             :error-messages="errors"
             name="input-10-2"
             label="Пароль"
-            hint="At least 8 characters"
+            hint="Как минимум 8 символов"
             class="input-group--focused"
             @click:append="show = !show"
+            :rules="passwordRules"
         ></v-text-field>
         </validation-provider>
         <v-btn
@@ -125,7 +127,11 @@ export default {
     select: null,
     checkbox: null,
     show: false,
-    user_exists: false
+    user_exists: false,
+    passwordRules: [
+      v => ( v && v.length >= 8 ) || "Пароль должен содержать хотя бы 8 символов",
+      v => ( v && v.length <= 100 ) || "Вы превысили лимит в 100 символов в пароле, это уж слишком!",
+    ]
   }),
 
   methods: {
@@ -178,32 +184,32 @@ setInteractionMode('eager')
 
 extend('digits', {
   ...digits,
-  message: '{_field_} needs to be {length} digits. ({_value_})',
+  message: '{_field_} должен содержать {length} цифр и начинаться с 79 / 89. ({_value_})',
 })
 
 extend('required', {
   ...required,
-  message: '{_field_} can not be empty',
+  message: 'Поле "{_field_}" не может быть пустым',
 })
 
 extend('max', {
   ...max,
-  message: '{_field_} may not be greater than {length} characters',
+  message: '{_field_} не может содержать больше {length} символов',
 })
 
 extend('regex', {
   ...regex,
-  message: '{_field_} {_value_} does not match {regex}',
+  message: '{_field_} {_value_} не соотвествует {regex}',
 })
 
 extend('email', {
   ...email,
-  message: 'Email must be valid',
+  message: 'Введите валидный email',
 })
 
 extend('password', {
   ...required,
-  message: 'Enter password',
+  message: 'Не забудьте пароль!',
 })
 </script>
 
