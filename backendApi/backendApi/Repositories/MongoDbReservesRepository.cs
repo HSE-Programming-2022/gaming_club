@@ -22,11 +22,14 @@ namespace backendApi.Repositories
 
         public bool CheckAvailability(DateTime startDate, DateTime finishTime, Guid placeId)
         {
-            var reserve = reservesCollection.Find(reserve =>
+            var filter = filterBuilder.Where(reserve =>
                 reserve.Place.Id == placeId &&
                 reserve.StartTime < finishTime &&
-                reserve.FinishTime > startDate
-            );
+                reserve.FinishTime > startDate);
+            var reserve = reservesCollection.Find(
+                filter
+            ).SingleOrDefault();
+            Console.WriteLine(reserve);
             return reserve is null;
         }
 

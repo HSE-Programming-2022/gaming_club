@@ -14,17 +14,14 @@ namespace backendApi.Controllers
     {
         private readonly IReserveRepository repository;
         private readonly IUsersRepository repositoryUsers;
-        private readonly ITariffesRepository repositoryTariffes;
         private readonly IPlacesRepository repositoryPlaces;
 
         public ReserveController(IReserveRepository repository, 
                                 IUsersRepository repositoryUsers,
-                                ITariffesRepository repositoryTariffes,
                                 IPlacesRepository repositoryPlaces)
         {
             this.repository = repository;
             this.repositoryUsers = repositoryUsers;
-            this.repositoryTariffes = repositoryTariffes;
             this.repositoryPlaces = repositoryPlaces;
         }
 
@@ -92,11 +89,10 @@ namespace backendApi.Controllers
             {
                 return UnprocessableEntity();
             }
-             
-            // DateTime startDate, DateTime finishTime, int row, int seat
+            
             if (!repository.CheckAvailability(startTime, finishTime, reserveDto.PlaceId))
             {
-                Conflict();
+                return Conflict();
             }
 
             Reserve reserve = new()
@@ -108,6 +104,20 @@ namespace backendApi.Controllers
                 CreatedTime = DateTime.Now
             };
             repository.CreateReserve(reserve);
+            
+            if (existingReserve.User.Balance < cost)
+            {
+                return Conflict();
+            }
+
+            var newBalance = existingReserve.User.Balance - cost;
+
+            User updatedUser = existingReserve.User with
+            {
+                Balance = newBalance
+            };
+
+            repositoryUsers.UpdateUser(updatedUser);
             return CreatedAtAction(nameof(GetReserve), new {id = reserve.Id}, reserve.AsDto());
         }
 
@@ -157,41 +167,28 @@ namespace backendApi.Controllers
 
             decimal cost = CostCalculation(existingReserve);
 
-            if (cost == 0)
-            {
-                return Conflict();
-            }
-
             return cost;
         }
-
-        [HttpPost("payment/{id}")]
-        public ActionResult PayForReserve(Guid id)
+        
+        [HttpPost("is_available")]
+        public ActionResult CheckAvailability(CheckAvailabilityReserveDto reserveDto)
         {
-            var existingReserve = repository.GetReserve(id);
-
-            decimal cost = CostCalculation(existingReserve);
-
-            if (existingReserve is null)
+            DateTime startTime; 
+            DateTime finishTime;
+            try
             {
-                return NotFound();
+                startTime = DateTime.Parse(reserveDto.StartTime);
+                finishTime = DateTime.Parse(reserveDto.FinishTime);
             }
+            catch (FormatException e)
+            {
+                return UnprocessableEntity();
+            }
+            if (!repository.CheckAvailability(startTime, finishTime, reserveDto.PlaceId))
 
-            if (cost == 0 | existingReserve.User.Balance < cost)
             {
                 return Conflict();
             }
-
-            var newBalance = existingReserve.User.Balance - cost;
-
-            User updatedUser = existingReserve.User with
-            {
-                Balance = newBalance
-            };
-
-            repositoryUsers.UpdateUser(updatedUser);
-
-            return NoContent();
-        }
+            return Ok();
     }
 }
