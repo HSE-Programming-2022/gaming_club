@@ -4,6 +4,8 @@
       <div v-if="this.loadedUserInfo">
         <NavigationBar :userLoggedInProp=this.userLoggedIn>
         </NavigationBar>
+        <BackgroundComponent>
+        </BackgroundComponent>
         <v-sheet
             id="scrolling-techniques-6"
         >
@@ -28,19 +30,6 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
 }
 
 @font-face {
@@ -133,7 +122,7 @@ nav {
   left:0;
   right:0;
   margin:0 auto;
-  background:rgba(0,0,0,0.2);
+  background:rgba(0, 0, 0, 0.445);
   box-shadow:0 0 0px 3px rgba(0,0,0,0.2);
   opacity:0.4
 }#btn-twtr:hover{color:#fff;opacity:1}
@@ -141,17 +130,19 @@ nav {
 <script>
 
 import NavigationBar from "@/components/NavigationBar";
+import BackgroundComponent from "@/components/BackgroundComponent";
 import axios from "axios";
 
 export default {
   components: {
     NavigationBar,
+    BackgroundComponent
   },
   data() {
     return {
       collapseOnScroll: true,
       userLoggedIn: false,
-      loadedUserInfo: false,
+      loadedUserInfo: false
     }
   },
   watch: {
