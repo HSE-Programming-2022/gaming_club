@@ -16,6 +16,6 @@ namespace backendApi.Entities
         
         public DateTime FinishTime { get; init; }
 
-        public decimal Cost { get; init; }
+        public decimal Cost { get; set; }
     }
 }

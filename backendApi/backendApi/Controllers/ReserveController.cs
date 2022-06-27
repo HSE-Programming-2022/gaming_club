@@ -35,26 +35,22 @@ namespace backendApi.Controllers
             var placeType = reserve.Place.Type;
             var neededTariffes = repositoryTariffes.GetTariffes().Where(tariff => tariff.Type == placeType &&
                     (tariff.BlockTimeStart <= createdTime &&
-                     tariff.BlockTimeEnd > createdTime))
-                .OrderByDescending(tariff => tariff.Hours);
+                     tariff.BlockTimeEnd + 24 * (tariff.BlockTimeStart > tariff.BlockTimeEnd ? 1 : 0) > createdTime))
+                .OrderByDescending(tariff => tariff.Hours).ToList();
             decimal cost = 0;
 
-            while (hours != 0)
+            while (hours > 0)
             {
                 foreach (var tariff in neededTariffes)
                 {
-                    if (tariff.Hours > hours)
-                    {
-                        continue;
-                    }
-                    else
+                    if (tariff.Hours <= hours)
                     {
                         hours -= tariff.Hours;
                         cost += tariff.SessionPrice;
+                        break;
                     }
                 }
             }
-
             return cost;
         }
 
@@ -104,23 +100,24 @@ namespace backendApi.Controllers
                 Place = repositoryPlaces.GetPlace(reserveDto.PlaceId),
                 StartTime = startTime,
                 FinishTime = finishTime,
-                CreatedTime = DateTime.Now
+                CreatedTime = DateTime.Now,
             };
 
             var cost = CostCalculation(reserve);
 
             if (reserve.User.Balance < cost)
             {
-                return Conflict();
+                return BadRequest();
             }
 
+            reserve.Cost = cost;
             var newBalance = reserve.User.Balance - cost;
 
             User updatedUser = reserve.User with
             {
                 Balance = newBalance
             };
-
+            Console.WriteLine(reserve.Cost);
             repository.CreateReserve(reserve);
             repositoryUsers.UpdateUser(updatedUser);
             return CreatedAtAction(nameof(GetReserve), new {id = reserve.Id}, reserve.AsDto());
@@ -184,7 +181,6 @@ namespace backendApi.Controllers
             };
 
             decimal cost = CostCalculation(reserve);
-
             return cost;
         }
 

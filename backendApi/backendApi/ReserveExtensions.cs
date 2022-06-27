@@ -16,7 +16,8 @@ namespace backendApi
                 PlaceNumber = reserve.Place.Number,
                 CreatedTime = reserve.CreatedTime,
                 StartTime = reserve.StartTime,
-                FinishTime = reserve.FinishTime
+                FinishTime = reserve.FinishTime,
+                Cost = reserve.Cost
             };
         }
     }
