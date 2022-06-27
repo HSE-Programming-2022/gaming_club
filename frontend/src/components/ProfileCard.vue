@@ -48,9 +48,9 @@
             </v-list-item>
 
             <v-card-actions>
-            <v-btn 
+            <v-btn to="/pay"
                 class="description" 
-                color="green"
+                color="purple"
                 outlined
                 rounded
                 text

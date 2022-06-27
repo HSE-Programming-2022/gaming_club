@@ -1,13 +1,13 @@
 <template>
 <div>
-  <h1 class="description" align="left" style="margin-left: 130px; margin-bottom: 40px; font-size: 30px; color: #D3D3D3">
+  <h1 class="description" align="left" style="margin-left: 790px; margin-bottom: 40px; font-size: 30px; color: #D3D3D3; position: fixed">
       Профиль пользователя
   </h1>
   <v-row style="align: left">
     <h2 align="left" style="margin-left: 140px; font-size: 20px; font-size: 23px; color: #D3D3D3"> 
-    <div style="margin-bottom: 10px">
+    <div style="margin-top: 10px; margin-bottom: 10px;">
     Ты провел в клубе: {{ Math.floor(total_time / 3600000) }} ч {{ Math.floor((total_time / 3600000 - Math.floor(total_time / 3600000)) * 60)}} минут </div> <hr>
-    <div style="margin-top: 10px; color: green">
+    <div style="margin-top: 10px; color: purple">
     Текущие брони:  
     </div>
     <div v-if="current_res.length == 0">
@@ -35,7 +35,7 @@
       </div>
     </div>
   </h2>
-  <ProfileCard align="left" style="margin-left: 55%; position: fixed" :Name=this.name :Surname=this.surname :Email=this.email :Balance=this.balance :PictureNumber=this.random_number />
+  <ProfileCard align="left" style="margin-left: 55%; margin-top: 70px; position: fixed" :Name=this.name :Surname=this.surname :Email=this.email :Balance=this.balance :PictureNumber=this.random_number />
    </v-row>
 </div>
 </template>
