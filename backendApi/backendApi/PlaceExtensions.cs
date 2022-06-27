@@ -10,7 +10,6 @@ namespace backendApi
             return new PlaceDto
             {
                 Id = place.Id,
-                Price = place.Price,
                 RowNumber = place.RowNumber,
                 SeatNumber = place.SeatNumber,
                 Number = place.Number,

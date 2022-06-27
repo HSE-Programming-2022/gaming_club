@@ -5,18 +5,18 @@ namespace backendApi.Dtos
     public record UpdateTariffDto
     {
         [Required]
-        public string Name { get; set; }
+        public string Name { get; init; }
 
         [Required]
         [Range(0, 10000)]
-        public decimal SessionPrice { get; set; }
+        public decimal SessionPrice { get; init; }
 
         [Required]
         [Range(0, 24)]
-        public int BlockTimeStart { get; set; }
+        public int BlockTimeStart { get; init; }
 
         [Required]
         [Range(1, 24)]
-        public int BlockTimeEnd { get; set; }
+        public int BlockTimeEnd { get; init; }
     }
 }

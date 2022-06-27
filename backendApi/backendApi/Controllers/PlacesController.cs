@@ -46,14 +46,13 @@ namespace backendApi.Controllers
         
         public ActionResult<PlaceDto> CreatePlace(CreatePlaceDto placeDto)
         {
-            if (repository.GetPlaceByHallRowSeat(placeDto.Number, placeDto.RowNumber, placeDto.SeatNumber) is not null)
+            if (repository.GetPlaceByNumberRowSeat(placeDto.Number, placeDto.RowNumber, placeDto.SeatNumber) is not null)
             {
                 return Conflict();
             }
             Place place = new()
             {
                 Id = Guid.NewGuid(),
-                Price = placeDto.Price,
                 RowNumber = placeDto.RowNumber,
                 SeatNumber = placeDto.SeatNumber,
                 Number = placeDto.Number,
@@ -79,7 +78,6 @@ namespace backendApi.Controllers
 
             Place updatedPlace = existingPlace with 
             {
-                Price = placeDto.Price,
                 Description = placeDto.Description,
                 Type = placeDto.Type
             };

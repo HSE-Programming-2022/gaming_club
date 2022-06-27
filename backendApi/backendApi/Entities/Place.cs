@@ -6,8 +6,6 @@ namespace backendApi.Entities
     {
         public Guid Id { get; init; }
 
-        public decimal Price { get; init; }
-
         public int RowNumber { get; init; }
 
         public int SeatNumber { get; init; }
