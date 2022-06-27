@@ -4,11 +4,9 @@ namespace backendApi.Dtos
 {
     public class UpdateUserDto
     {
-        [Required]
         public string Email { get; init; }
         
-        [Required]
-        [Range(0, 1000000)]
+        [Range(-100000, 1000000)]
         public decimal Balance { get; init; }
     }
 }

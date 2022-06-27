@@ -4,7 +4,7 @@
       <v-col cols="12">
       </v-col>
 
-      <v-col class="computer_font mb-4">
+      <v-col >
         <h1 class="computer_font display-2 font-weight-bold mb-3">
           Компьютерный клуб <a class="gradient_text">REBORN</a>
         </h1>

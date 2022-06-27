@@ -5,10 +5,6 @@ namespace backendApi.Dtos
     public record CreatePlaceDto
     {
         [Required]
-        [Range(1, 10000)]
-        public decimal Price { get; set; }
-
-        [Required]
         [Range(1, 50)]
         public int RowNumber { get; init; }
 
@@ -17,7 +13,7 @@ namespace backendApi.Dtos
         public int SeatNumber { get; init; }
 
         [Required]
-        [Range(1, 5)]
+        [Range(1, 100)]
         public int Number { get; init; }
 
         [Required]

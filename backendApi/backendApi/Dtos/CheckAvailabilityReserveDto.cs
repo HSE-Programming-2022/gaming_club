@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace backendApi.Dtos
 {
-    public record CreateReserveDto
+    public record CheckAvailabilityReserveDto
     {
-        [Required]
-        public Guid UserId { get; init; }
         [Required]
         public Guid PlaceId { get; init; }
         [Required]

@@ -49,8 +49,7 @@ namespace backendApi.Controllers
             if (repository.GetTariffByHoursBlockTimeStartBlockTimeEndType(tariffDto.Hours,
                                                                           tariffDto.BlockTimeStart,
                                                                           tariffDto.BlockTimeEnd,
-                                                                          tariffDto.Type) is not null ||
-                tariffDto.BlockTimeStart >= tariffDto.BlockTimeEnd)
+                                                                          tariffDto.Type) is not null)
             {
                 return Conflict();
             }

@@ -125,12 +125,24 @@ namespace backendApi.Controllers
                 return NotFound();
             }
 
-            User updatedUser = user with
+            if (userDto.Balance != 0)
             {
-                Email = userDto.Email,
-                Balance = userDto.Balance
-            };
-            repository.UpdateUser(updatedUser);
+                User updatedUser = user with
+                {
+                    Balance = user.Balance + userDto.Balance
+                };
+                repository.UpdateUser(updatedUser);
+            }
+
+            if (userDto.Email is not null)
+            {
+                User updatedUser = user with
+                {
+                    Balance = user.Balance + userDto.Balance
+                };
+                repository.UpdateUser(updatedUser);
+            }
+            
 
             return NoContent();
         }
