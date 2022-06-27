@@ -13,6 +13,5 @@ namespace backendApi.Dtos
         public string StartTime { get; init; }
         [Required]
         public string FinishTime { get; init; }
-        public DateTime CreatedTime { get; init; }
     }
 }

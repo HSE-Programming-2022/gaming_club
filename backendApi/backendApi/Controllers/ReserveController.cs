@@ -15,14 +15,17 @@ namespace backendApi.Controllers
         private readonly IReserveRepository repository;
         private readonly IUsersRepository repositoryUsers;
         private readonly IPlacesRepository repositoryPlaces;
+        private readonly ITariffesRepository repositoryTariffes;
 
-        public ReserveController(IReserveRepository repository, 
-                                IUsersRepository repositoryUsers,
-                                IPlacesRepository repositoryPlaces)
+        public ReserveController(IReserveRepository repository,
+            IUsersRepository repositoryUsers,
+            IPlacesRepository repositoryPlaces,
+            ITariffesRepository repositoryTariffes)
         {
             this.repository = repository;
             this.repositoryUsers = repositoryUsers;
             this.repositoryPlaces = repositoryPlaces;
+            this.repositoryTariffes = repositoryTariffes;
         }
 
         private decimal CostCalculation(Reserve reserve)
@@ -30,10 +33,10 @@ namespace backendApi.Controllers
             var createdTime = reserve.CreatedTime.Hour;
             var hours = (reserve.FinishTime - reserve.StartTime).Hours;
             var placeType = reserve.Place.Type;
-            var neededTariffes = repositoryTariffes.GetTariffes().Where(tariff => tariff.Type == placeType && 
-                                                                                 (tariff.BlockTimeStart <= createdTime &&
-                                                                                  tariff.BlockTimeEnd > createdTime))
-                                                                 .OrderByDescending(tariff => tariff.Hours);
+            var neededTariffes = repositoryTariffes.GetTariffes().Where(tariff => tariff.Type == placeType &&
+                    (tariff.BlockTimeStart <= createdTime &&
+                     tariff.BlockTimeEnd > createdTime))
+                .OrderByDescending(tariff => tariff.Hours);
             decimal cost = 0;
 
             while (hours != 0)
@@ -78,7 +81,7 @@ namespace backendApi.Controllers
         [HttpPost]
         public ActionResult<ReserveDto> CreateReserve(CreateReserveDto reserveDto)
         {
-            DateTime startTime; 
+            DateTime startTime;
             DateTime finishTime;
             try
             {
@@ -89,7 +92,7 @@ namespace backendApi.Controllers
             {
                 return UnprocessableEntity();
             }
-            
+
             if (!repository.CheckAvailability(startTime, finishTime, reserveDto.PlaceId))
             {
                 return Conflict();
@@ -103,20 +106,22 @@ namespace backendApi.Controllers
                 FinishTime = finishTime,
                 CreatedTime = DateTime.Now
             };
-            repository.CreateReserve(reserve);
-            
-            if (existingReserve.User.Balance < cost)
+
+            var cost = CostCalculation(reserve);
+
+            if (reserve.User.Balance < cost)
             {
                 return Conflict();
             }
 
-            var newBalance = existingReserve.User.Balance - cost;
+            var newBalance = reserve.User.Balance - cost;
 
-            User updatedUser = existingReserve.User with
+            User updatedUser = reserve.User with
             {
                 Balance = newBalance
             };
 
+            repository.CreateReserve(reserve);
             repositoryUsers.UpdateUser(updatedUser);
             return CreatedAtAction(nameof(GetReserve), new {id = reserve.Id}, reserve.AsDto());
         }
@@ -127,8 +132,7 @@ namespace backendApi.Controllers
             return repository.GetReserves().Where(reserve => reserve.User.Id == id)
                 .Select(item => item.AsDto());
         }
-
-        // PUT /reserves/{id}
+        
         [HttpPut("{id}")]
         public ActionResult UpdateReserve(Guid id, UpdateReserveDto reserveDto)
         {
@@ -139,7 +143,8 @@ namespace backendApi.Controllers
                 return NotFound();
             }
 
-            var place = repositoryPlaces.GetPlaceByNumberRowSeat(reserveDto.PlaceNumber, reserveDto.PlaceRow, reserveDto.PlaceSeat);
+            var place = repositoryPlaces.GetPlaceByNumberRowSeat(reserveDto.PlaceNumber, reserveDto.PlaceRow,
+                reserveDto.PlaceSeat);
 
             Reserve updatedReserve = existingReserve with
             {
@@ -152,28 +157,12 @@ namespace backendApi.Controllers
             repository.UpdateReserve(updatedReserve);
 
             return NoContent();
-
         }
 
-        [HttpPost("cost/{id}")]
-        public ActionResult<decimal> CalculateCost(Guid id)
+        [HttpPost("cost")]
+        public ActionResult<decimal> CalculateCost(CreateReserveDto reserveDto)
         {
-            var existingReserve = repository.GetReserve(id);
-
-            if (existingReserve is null)
-            {
-                return NotFound();
-            }
-
-            decimal cost = CostCalculation(existingReserve);
-
-            return cost;
-        }
-        
-        [HttpPost("is_available")]
-        public ActionResult CheckAvailability(CheckAvailabilityReserveDto reserveDto)
-        {
-            DateTime startTime; 
+            DateTime startTime;
             DateTime finishTime;
             try
             {
@@ -184,11 +173,43 @@ namespace backendApi.Controllers
             {
                 return UnprocessableEntity();
             }
+            
+            Reserve reserve = new()
+            {
+                User = repositoryUsers.GetUser(reserveDto.UserId),
+                Place = repositoryPlaces.GetPlace(reserveDto.PlaceId),
+                StartTime = startTime,
+                FinishTime = finishTime,
+                CreatedTime = DateTime.Now
+            };
+
+            decimal cost = CostCalculation(reserve);
+
+            return cost;
+        }
+
+        [HttpPost("is_available")]
+        public ActionResult CheckAvailability(CheckAvailabilityReserveDto reserveDto)
+        {
+            DateTime startTime;
+            DateTime finishTime;
+            try
+            {
+                startTime = DateTime.Parse(reserveDto.StartTime);
+                finishTime = DateTime.Parse(reserveDto.FinishTime);
+            }
+            catch (FormatException e)
+            {
+                return UnprocessableEntity();
+            }
+
             if (!repository.CheckAvailability(startTime, finishTime, reserveDto.PlaceId))
 
             {
                 return Conflict();
             }
+
             return Ok();
+        }
     }
 }
