@@ -15,17 +15,14 @@ namespace backendApi.Controllers
     {
         private readonly IReserveRepository repository;
         private readonly IUsersRepository repositoryUsers;
-        private readonly ITariffesRepository repositoryTariffes;
         private readonly IPlacesRepository repositoryPlaces;
 
         public ReserveController(IReserveRepository repository, 
                                 IUsersRepository repositoryUsers,
-                                ITariffesRepository repositoryTariffes,
                                 IPlacesRepository repositoryPlaces)
         {
             this.repository = repository;
             this.repositoryUsers = repositoryUsers;
-            this.repositoryTariffes = repositoryTariffes;
             this.repositoryPlaces = repositoryPlaces;
         }
         [HttpGet]
@@ -61,11 +58,10 @@ namespace backendApi.Controllers
             {
                 return UnprocessableEntity();
             }
-             
-            // DateTime startDate, DateTime finishTime, int row, int seat
+            
             if (!repository.CheckAvailability(startTime, finishTime, reserveDto.PlaceId))
             {
-                Conflict();
+                return Conflict();
             }
 
             Reserve reserve = new()
@@ -86,5 +82,26 @@ namespace backendApi.Controllers
                 .Select(item => item.AsDto());
         }
 
+        [HttpPost("is_available")]
+        public ActionResult CheckAvailability(CheckAvailabilityReserveDto reserveDto)
+        {
+            DateTime startTime; 
+            DateTime finishTime;
+            try
+            {
+                startTime = DateTime.Parse(reserveDto.StartTime);
+                finishTime = DateTime.Parse(reserveDto.FinishTime);
+            }
+            catch (FormatException e)
+            {
+                return UnprocessableEntity();
+            }
+            if (!repository.CheckAvailability(startTime, finishTime, reserveDto.PlaceId))
+            {
+                return Conflict();
+            }
+
+            return Ok();
+        }
     }
 }

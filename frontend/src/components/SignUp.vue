@@ -179,7 +179,6 @@ export default {
     }
   },
 }
-
 setInteractionMode('eager')
 
 extend('digits', {
