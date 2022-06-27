@@ -10,5 +10,6 @@ namespace backendApi.Dtos
         public Guid PlaceId { get; init; }
         public string StartTime { get; init; }
         public string FinishTime { get; init; }
+        public DateTime CreatedTime { get; init; }
     }
 }

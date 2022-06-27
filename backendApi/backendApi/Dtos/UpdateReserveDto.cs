@@ -1,17 +1,20 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace backendApi.Dtos
 {
-    public record ReserveDto
+    public record UpdateReserveDto
     {
-        public Guid Id { get; init; }
-        
-        public string UserCredentials { get; init; }
-
+        [Required]
+        [Range(1, 50)]
         public int PlaceRow { get; init; }
         
+        [Required]
+        [Range(1, 50)]
         public int PlaceSeat { get; init; }
         
+        [Required]
+        [Range(1, 100)]
         public int PlaceNumber { get; init; }
         
         public DateTime StartTime { get; init; }
@@ -20,6 +23,5 @@ namespace backendApi.Dtos
 
         public DateTime CreatedTime { get; init; }
 
-        public decimal Cost { get; init; }
     }
 }

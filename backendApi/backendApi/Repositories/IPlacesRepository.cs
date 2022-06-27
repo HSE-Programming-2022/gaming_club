@@ -8,7 +8,7 @@ namespace backendApi.Repositories
     {
         Place GetPlace(Guid id);
 
-        Place GetPlaceByHallRowSeat(int HallNumber, int RawNumber, int SeatNumber);
+        Place GetPlaceByNumberRowSeat(int Number, int RawNumber, int SeatNumber);
 
         IEnumerable<Place> GetPlaces();
 
