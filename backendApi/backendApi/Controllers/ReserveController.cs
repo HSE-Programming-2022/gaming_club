@@ -34,11 +34,17 @@ namespace backendApi.Controllers
             var hours = (reserve.FinishTime - reserve.StartTime).Hours;
             var placeType = reserve.Place.Type;
             var neededTariffes = repositoryTariffes.GetTariffes().Where(tariff => tariff.Type == placeType &&
-                    (tariff.BlockTimeStart <= createdTime &&
-                     tariff.BlockTimeEnd + 24 * (tariff.BlockTimeStart > tariff.BlockTimeEnd ? 1 : 0) > createdTime))
+                    (tariff.BlockTimeStart <= tariff.BlockTimeEnd ? 
+                        createdTime >= tariff.BlockTimeStart && createdTime <= tariff.BlockTimeEnd :
+                        createdTime >= tariff.BlockTimeStart || createdTime <= tariff.BlockTimeEnd
+                     )
+                )
                 .OrderByDescending(tariff => tariff.Hours).ToList();
             decimal cost = 0;
-
+            if (neededTariffes.Count == 0)
+            {
+                return 0;
+            }
             while (hours > 0)
             {
                 foreach (var tariff in neededTariffes)
@@ -104,8 +110,8 @@ namespace backendApi.Controllers
             };
 
             var cost = CostCalculation(reserve);
-
-            if (reserve.User.Balance < cost)
+            
+            if (cost == 0 || reserve.User.Balance < cost)
             {
                 return BadRequest();
             }
@@ -117,7 +123,6 @@ namespace backendApi.Controllers
             {
                 Balance = newBalance
             };
-            Console.WriteLine(reserve.Cost);
             repository.CreateReserve(reserve);
             repositoryUsers.UpdateUser(updatedUser);
             return CreatedAtAction(nameof(GetReserve), new {id = reserve.Id}, reserve.AsDto());

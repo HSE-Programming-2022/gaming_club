@@ -30,6 +30,7 @@ namespace backendApi.Repositories
                 filter
             ).SingleOrDefault();
             Console.WriteLine(reserve);
+            Console.WriteLine(reserve is null);
             return reserve is null;
         }
 
