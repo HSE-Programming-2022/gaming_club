@@ -5,7 +5,6 @@
       :id="`trigger-${index+1}`"
       :data-aos-anchor="`#trigger-${index}`"
       :data-aos="`fade-${side}`"
-      :style="`margin-top: 5em;`"
       data-aos-delay="300"
       data-aos-anchor-placement="top-center"
       data-aos-duration="1000"

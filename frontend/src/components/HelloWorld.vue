@@ -19,7 +19,6 @@
             max-width="500"
             id="trigger-0"
             data-aos="fade-right"
-            :style="`margin-top: 5em;`"
             data-aos-delay="300"
             data-aos-anchor-placement="top-center"
             data-aos-duration="1000"

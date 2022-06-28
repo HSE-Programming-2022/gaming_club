@@ -21,29 +21,7 @@
                 </div>
               </div>
               <label for="cardNumber" class="card-item__number" ref="cardNumber">
-                <template v-if="getCardType === 'amex'">
-                 <span v-for="(n, $index) in amexCardMask" :key="$index">
-                  <transition name="slide-fade-up">
-                    <div
-                        class="card-item__numberItem"
-                        v-if="$index > 4 && $index < 14 && cardNumber.length > $index && n.trim() !== ''"
-                    >*</div>
-                    <div class="card-item__numberItem"
-                         :class="{ '-active' : n.trim() === '' }"
-                         :key="$index" v-else-if="cardNumber.length > $index">
-                      {{cardNumber[$index]}}
-                    </div>
-                    <div
-                        class="card-item__numberItem"
-                        :class="{ '-active' : n.trim() === '' }"
-                        v-else
-                        :key="$index + 1"
-                    >{{n}}</div>
-                  </transition>
-                </span>
-                </template>
-
-                <template v-else>
+                <template>
                   <span v-for="(n, $index) in otherCardMask" :key="$index">
                     <transition name="slide-fade-up">
                       <div
@@ -120,7 +98,7 @@
       <div class="card-form__inner">
         <div class="card-input">
           <label for="cardNumber" class="card-input__label">Card Number</label>
-          <input type="text" id="cardNumber" class="card-input__input" v-mask="generateCardNumberMask" v-model="cardNumber" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardNumber" autocomplete="off">
+          <input type="text" id="cardNumber" maxlength="19" class="card-input__input" v-mask="generateCardNumberMask" v-model="cardNumber" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="cardNumber" autocomplete="off">
         </div>
         <div class="card-input">
           <label for="cardName" class="card-input__label">Card Holders</label>
@@ -269,7 +247,7 @@ body {
   &__button {
     width: 100%;
     height: 55px;
-    background: #2364d2;
+    background: #7C327E;
     border: none;
     border-radius: 5px;
     font-size: 22px;
@@ -494,7 +472,7 @@ body {
     position: relative;
     z-index: 4;
     height: 100%;
-    text-shadow: 7px 6px 10px rgba(14, 42, 90, 0.8);
+    text-shadow: 7px 6px 10px rgba(124, 50, 126, 0.8);
     user-select: none;
     @media screen and (max-width: 480px) {
       padding: 20px 10px;
@@ -652,10 +630,10 @@ body {
     align-items: center;
     justify-content: flex-end;
     padding-right: 10px;
-    color: #1a3b5d;
+    color: #7C327E;
     font-size: 18px;
     border-radius: 4px;
-    box-shadow: 0px 10px 20px -7px rgba(32, 56, 117, 0.35);
+    box-shadow: 0px 10px 20px -7px rgba(124, 50, 126, 0.35);
 
     @media screen and (max-width: 480px) {
       height: 40px;
@@ -682,7 +660,7 @@ body {
     font-size: 14px;
     margin-bottom: 5px;
     font-weight: 500;
-    color: #1a3b5d;
+    color: #7C327E;
     width: 100%;
     display: block;
     user-select: none;
@@ -697,7 +675,7 @@ body {
     font-size: 18px;
     padding: 5px 15px;
     background: none;
-    color: #1a3b5d;
+    color: #7C327E;
     font-family: "Source Sans Pro", sans-serif;
 
     &:hover,
@@ -810,21 +788,19 @@ export default  {
       cardYear: "",
       cardCvv: "",
       minCardYear: new Date().getFullYear(),
-      amexCardMask: "#### ###### #####",
       otherCardMask: "#### #### #### ####",
-      cardNumberTemp: "",
       isCardFlipped: false,
       focusElementStyle: null,
       isInputFocused: false,
+      prevLength: 0,
     };
   },
   mounted() {
-    this.cardNumberTemp = this.otherCardMask;
     document.getElementById("cardNumber").focus();
     let user = localStorage.getItem( 'user-info')
     if (!user)
     {
-      this.$router.push({name: "login"})
+      this.$router.push({name: "Login"})
     }
     user =  JSON.parse(user);
   },
@@ -834,22 +810,13 @@ export default  {
       let re = new RegExp("^4");
       if (number.match(re) != null) return "visa";
 
-      re = new RegExp("^(34|37)");
-      if (number.match(re) != null) return "amex";
-
       re = new RegExp("^5[1-5]");
       if (number.match(re) != null) return "mastercard";
 
-      re = new RegExp("^6011");
-      if (number.match(re) != null) return "discover";
-
-      re = new RegExp('^9792')
-      if (number.match(re) != null) return 'troy'
-
-      return "visa"; // default type
+      return "visa";
     },
     generateCardNumberMask () {
-      return this.getCardType === "amex" ? this.amexCardMask : this.otherCardMask;
+      return this.otherCardMask;
     },
     minCardMonth () {
       if (this.cardYear === this.minCardYear) return new Date().getMonth() + 1;
@@ -857,10 +824,24 @@ export default  {
     }
   },
   watch: {
-    cardYear () {
-      if (this.cardMonth < this.minCardMonth) {
-        this.cardMonth = "";
+    cardNumber () {
+      if (this.cardNumber.length > this.prevLength) {
+        if (this.cardNumber.length  === 4 || this.cardNumber.length  === 9 || this.cardNumber.length  === 14) {
+          this.cardNumber += ' '
+        } else {
+          let last_chr = this.cardNumber[this.cardNumber.length - 1]
+          if (this.cardNumber.length !== 0) {
+            if (!(last_chr >= '0' && last_chr <= '9' || last_chr === ' ')) {
+              this.cardNumber = this.cardNumber.slice(0, this.cardNumber.length - 1)
+            }
+          }
+        }
+        this.prevLength += 1
+      } else {
+        this.prevLength = 0
+        this.cardNumber = ''
       }
+
     }
   },
   methods: {
@@ -868,15 +849,13 @@ export default  {
       let user = localStorage.getItem('user-info')
       user = JSON.parse(user)
       let newBalance = document.getElementById("sumOfBalance").value;
-      console.log(newBalance);
+      console.log(newBalance)
       await axios.put(this.$backend_url + "/users/" + user['id'], {
-        balance: newBalance //ввести переменную для баланса
+        balance: newBalance
       })
-          .then(function (response) {
-            if (response.status === 204) {
-              console.log("success")
-            }
-          })
+      user['balance'] = parseInt(user['balance']) + parseInt(newBalance)
+      localStorage.setItem('user-info', JSON.stringify(user))
+      this.$router.push({name: "Profile"})
     },
     flipCard (status) {
       this.isCardFlipped = status;

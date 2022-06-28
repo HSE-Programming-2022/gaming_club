@@ -4,7 +4,7 @@
         height="500"
         src="@/assets/background.jpeg">
     </v-parallax>
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HelloWorld />
   </div>
 </template>
 
