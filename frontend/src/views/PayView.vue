@@ -129,7 +129,6 @@
         <div class="card-input">
           <label for="sumOfBalance" class="card-input__label">Сумма пополнения</label>
           <input type="text" id="sumOfBalance" class="card-input__input" v-model="sumOfBalance" v-on:focus="focusInput" v-on:blur="blurInput" data-ref="sumOfBalance" autocomplete="off">
-          const newBalance = document.getElemetById("sumOfBalance").value;
         </div>
         <div class="card-form__row">
           <div class="card-form__col">
@@ -157,9 +156,9 @@
           </div>
         </div>
 
-        <button class="card-form__button">
+        <div class="card-form__button" @click="update_balance()">
           Пополнить
-        </button>
+        </div>
       </div>
     </div>
   </div>
@@ -816,7 +815,7 @@ export default  {
       cardNumberTemp: "",
       isCardFlipped: false,
       focusElementStyle: null,
-      isInputFocused: false
+      isInputFocused: false,
     };
   },
   mounted() {
@@ -865,23 +864,17 @@ export default  {
     }
   },
   methods: {
-    async get_all_reservations() {
-      await axios.get(this.$backend_url + "/reservations")
-          .then(function (response) {
-            if (response.status === 200) {
-              console.log(response.data)
-            }
-          })
-    },
     async update_balance() {
       let user = localStorage.getItem('user-info')
       user = JSON.parse(user)
+      let newBalance = document.getElementById("sumOfBalance").value;
+      console.log(newBalance);
       await axios.put(this.$backend_url + "/users/" + user['id'], {
-        balance: this.newBalance //ввести переменную для баланса
+        balance: newBalance //ввести переменную для баланса
       })
           .then(function (response) {
             if (response.status === 204) {
-              console.log("WOW")
+              console.log("success")
             }
           })
     },
