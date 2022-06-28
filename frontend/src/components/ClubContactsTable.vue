@@ -2,7 +2,7 @@
   <v-simple-table class="stable">
     <template v-slot:default>
       <thead>
-      <tr >
+      <tr style="background: transparent;">
         <th class="text-left">
           Адрес клуба:
         </th>
@@ -16,8 +16,8 @@
           v-for="item in Samara"
           :key="item.name"
       >
-        <td class="abcd">{{ item.name }}</td>
-        <td class="ef">{{ item.number }}</td>
+        <td class="abcd text-left">{{ item.name }}</td>
+        <td class="ef text-left">{{ item.number }}</td>
       </tr>
       </tbody>
     </template>
@@ -39,7 +39,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 th.text-left {
   font-size: 25px !important;
 }
@@ -56,5 +56,11 @@ th.text-left {
   margin: auto;
   border: transparent;
   opacity: 1;
+}
+
+tbody {
+  tr:hover {
+    background-color: transparent !important;
+  }
 }
 </style>
