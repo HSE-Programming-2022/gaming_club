@@ -86,6 +86,14 @@
               Логин
             </v-list-item-title>
           </v-list-item>
+          <v-list-item to="/booking" v-if="this.userLoggedInProp">
+            <v-list-item-icon>
+              <v-icon>mdi-laptop</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>
+              Бронирование
+            </v-list-item-title>
+            </v-list-item>
           <v-list-item to="/profile" v-if="this.userLoggedInProp">
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>

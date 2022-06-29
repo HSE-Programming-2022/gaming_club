@@ -28,8 +28,9 @@
         ></v-time-picker>
         </div>
     </v-row>
+    <h2 style="font-family:our_font; margin-top:30px">количество часов:</h2>
   <div style="display:flex; flex-direction:column; align-items:center">
-    <div style="margin-top:30px; display:flex; align-items: center;">
+    <div style="display:flex; align-items: center;">
       <v-img v-if="hours > 0"
       :src="require('@/assets/arrows/left.svg')"
       style="max-width:48px; max-height:86px; margin-right:15px"
@@ -40,20 +41,24 @@
       style="max-width:48px; max-height:86px; margin-right:15px"
       ></v-img>
       <div style="font-family: our_font; font-size:100px;">{{hours}}</div>
-      <v-img 
+      <v-img v-if="hours < 23"
       :src="require('@/assets/arrows/right.svg')"
       style="max-width:48px; max-height:86px; margin-left:15px"
       v-on:click="hours += 1"
       ></v-img>
+      <v-img v-else
+      :src="require('@/assets/arrows/right_disabled.svg')"
+      style="max-width:48px; max-height:86px; margin-left:15px"
+      ></v-img>
       </div>
     </div>
-<div>
+<div v-if="res_date != null && hours != 0 && time1 != null">
    <div style="margin-top:30px; background-color:#252525;">
       <v-row v-for="row in 2" :key="row"> 
       <v-img v-for="seat in seats.slice(10*(row-1), 10*(row))" :key="seat"
             :src="require('@/assets/fractured_picture/'+ seat.number + '.svg')"
-            :style="{'visibility' : backfunc(new Date(res_date + ' ' + time1 + ':00'), new Date((new Date(res_date + ' ' + time1 + ':00').getTime()+hours*60*60*1000)), seat.id) ? 'hidden' : 'visible', 'opacity' : seat.id == chosen_seat || seat.id == watched_seat ? 1 : 0.5 }" 
-            @click="chosen_seat = seatChoose(seat.id, chosen_seat)" 
+            :style="{'visibility' : freeSeat(seat.id) ? 'visible' : 'hidden', 'opacity' : seat.id == chosen_seat || seat.id == watched_seat ? 1 : 0.5 }" 
+            @click="chosen_seat = seatChoose(seat.id, chosen_seat); reservationPrice()" 
             @mouseover="watched_seat=seatWatch(seat.id, watched_seat)"
             @mouseleave="watched_seat=null"
       ></v-img></v-row>
@@ -63,13 +68,18 @@
       <v-row v-for="row in [3, 4]" :key="row"> 
       <v-img v-for="seat in seats.slice(10*(row-1), 10*(row))" :key="seat"
             :src="require('@/assets/fractured_picture/'+ seat.number + '.svg')"
-            :style="{'visibility' : backfunc(new Date(res_date + ' ' + time1 + ':00'), new Date((new Date(res_date + ' ' + time1 + ':00').getTime()+hours*60*60*1000)), seat.id) ? 'hidden' : 'visible', 'opacity' : seat.id == chosen_seat || seat.id == watched_seat ? 1 : 0.5 }" 
-            @click="chosen_seat = seatChoose(seat.id, chosen_seat)"
+            :style="{'visibility' : freeSeat(seat.id) ? 'visible' : 'hidden', 'opacity' : seat.id == chosen_seat || seat.id == watched_seat ? 1 : 0.5 }" 
+            @click="chosen_seat = seatChoose(seat.id, chosen_seat); reservationPrice()"
             @mouseover="watched_seat=seatWatch(seat.id, watched_seat)"
             @mouseleave="watched_seat=null"
       ></v-img></v-row>
     </div>
-    <v-btn style="margin-top:30px" @click="submit" v-if="true">Забронировать</v-btn>
+    <div v-if="reservationPrice()"></div>
+    <div v-if="this.price" style="margin-top:30px">
+    <h1 style="font-family: our_font;">с вас {{this.price}}</h1>
+    <v-btn @click="submit">Забронировать</v-btn>
+    </div>
+    <v-btn to="/pay" v-else style="margin-top:30px">Пополнить баланс</v-btn>
 </div>
 </div>
 </template>
@@ -88,7 +98,8 @@ import axios from "axios"
     hours: 0,
     res_date: null,
     chosen_seat: null,
-    watched_seat: null
+    watched_seat: null,
+    price: 0,
     }),
 
     methods: {
@@ -112,6 +123,7 @@ import axios from "axios"
         else
         {
           chosen_seat = null
+          this.price = 0
         }
         return chosen_seat
       },
@@ -139,16 +151,39 @@ import axios from "axios"
         this.seats = seats
         },
 
-      backfunc(date, date1, number) {
-        if(date && date1 && number)
-        {
-          return false
-        }
-        else
-        {
-          return false
-        }
-      },
+      async freeSeat(id) {
+          await axios.post(this.$backend_url + "/reservations/is_available", {
+           placeId: id,
+           startTime: this.res_date + ' ' + this.time1 + ':00',
+           finishTime: this.formatDate(new Date((new Date(this.res_date + ' ' + this.time1 + ':00').getTime()+this.hours*60*60*1000)))
+          })
+              .then(function () {
+                return true
+              })
+              .catch(function () {
+                return false
+              });
+        },
+
+        async reservationPrice() {
+            console.log(1)
+            var price_handler = 0
+          await axios.post(this.$backend_url + "/reservations/cost", {
+            userId: this.userId,
+            placeId: this.chosen_seat,
+            startTime: this.res_date + ' ' + this.time1 + ':00',
+            finishTime: this.formatDate(new Date((new Date(this.res_date + ' ' + this.time1 + ':00').getTime()+this.hours*60*60*1000)))
+          })
+              .then(function (responce) { console.log(responce.data)
+                price_handler = responce.data
+              })
+              .catch(function (error) {
+                console.log(error)
+                price_handler = 0
+              });
+              console.log(2)
+              this.price = price_handler
+        },
 
       getneededDate(today) {
         var dd = today.getDate();
@@ -186,10 +221,6 @@ import axios from "axios"
           );
         },
        async submit () {
-          console.log(this.chosen_seat)
-          console.log(this.res_date + ' ' + this.time1 + ':00')
-          console.log(this.formatDate(new Date((new Date(this.res_date + ' ' + this.time1 + ':00').getTime()+this.hours*60*60*1000))))
-          console.log(this.userId)
           await axios.post(this.$backend_url + "/reservations", {
            userId: this.userId,
            placeId: this.chosen_seat,
@@ -197,14 +228,10 @@ import axios from "axios"
            finishTime: this.formatDate(new Date((new Date(this.res_date + ' ' + this.time1 + ':00').getTime()+this.hours*60*60*1000)))
           })
               .then(function (response) {
-                console.log(response.status)
                 if (response.status === 201) {
-                  console.log("заебись")
+                  this.$router.push({name: "Profile"})
                 }
               })
-              .catch(function (error) {
-                console.log(error)
-              });
         }
   },
     mounted()
