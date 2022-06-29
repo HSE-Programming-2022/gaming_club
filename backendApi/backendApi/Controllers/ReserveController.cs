@@ -188,7 +188,7 @@ namespace backendApi.Controllers
             decimal cost = CostCalculation(reserve);
             if (reserve.User.Balance < cost)
             {
-                return BadRequest();
+                return reserve.User.Balance - cost;
             }
             return cost;
         }
