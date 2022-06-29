@@ -6,6 +6,7 @@ import PriceView from "@/views/PriceView";
 import NewsView from "@/views/NewsView";
 import SignUpView from "@/views/SignUpView";
 import LoginView from "@/views/LoginView";
+import BookingView from "@/views/BookingView";
 import ProfileView from "@/views/ProfileView";
 import PayView from "@/views/PayView";
 
@@ -43,6 +44,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: LoginView
+  },
+  {
+    path: '/booking',
+    name: 'Booking',
+    component: BookingView
   },
   {
     path: '/profile',
