@@ -76,7 +76,7 @@
     }
 
     .star {
-    $star-count: 100;
+    $star-count: 50;
     --star-color: rgb(125, 55, 126);
     --star-tail-length: 6em;
     --star-tail-height: 2px;

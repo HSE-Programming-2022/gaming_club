@@ -54,7 +54,7 @@ export default {
       var time = 0
       let res_current = new Array()
       let res_past = new Array()
-      await axios.get(this.$backend_url + "/reservations")
+      await axios.get(this.$backend_url + "/reservations/by_user/" + this.id)
       .then(function(response) {
         for (let i = 0; i < response.data.length; i++) {
           if (new Date(response.data[i]['startTime']) > new Date()){
@@ -92,6 +92,7 @@ export default {
       total_time: 0,
       current_res: '',
       past_res: '',
+      id: ''
     }}
   ,
   mounted()
@@ -103,6 +104,7 @@ export default {
       this.$router.push({name: "Login"})
     }
     user = JSON.parse(user)
+    this.id = user['id']
     this.name = user['name']
     this.surname = user['surname']
     this.email = user['email']

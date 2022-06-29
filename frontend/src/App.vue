@@ -4,8 +4,7 @@
       <div v-if="this.loadedUserInfo">
         <NavigationBar :userLoggedInProp=this.userLoggedIn>
         </NavigationBar>
-        <BackgroundComponent>
-        </BackgroundComponent>
+        <BackgroundComponent />
         <v-sheet
             id="scrolling-techniques-6"
         >
